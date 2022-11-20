@@ -10,7 +10,7 @@ from django.conf import settings
 
 class ETF(models.Model):
     """Model For Representing An ETF"""
-    symbol = models.CharField(max_length = 6)
+    symbol = models.CharField(max_length = 20)
     date_created = models.DateField()
     is_deleted = models.BooleanField(default = False)
 
@@ -27,7 +27,7 @@ class ETF_instance(models.Model):
     date_created = models.DateField()
     is_deleted = models.BooleanField(default = False)
     ETF = models.ForeignKey('ETF', on_delete = models.RESTRICT)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.RESTRICT, null = True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.RESTRICT, null = True, blank = True)
 
     def display_ETF(self):
         """Method to request linked ETF"""
