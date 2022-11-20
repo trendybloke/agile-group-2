@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "accounts", #new
+    "accounts",
+    "Login_SignUp_ResetPWEmail_HomePage",
 ]
 
 MIDDLEWARE = [
@@ -50,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Django_LogIn_UserAuth_Alison.urls'
+ROOT_URLCONF = 'Login_SignUp_ResetPWEmail_HomePage.urls'#Django_LogIn_UserAuth_Alison.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Django_LogIn_UserAuth_Alison.wsgi.application'
+WSGI_APPLICATION = 'Login_SignUp_ResetPWEmail_HomePage.wsgi.application'#'Django_LogIn_UserAuth_Alison.wsgi.application'
 
 
 # Database

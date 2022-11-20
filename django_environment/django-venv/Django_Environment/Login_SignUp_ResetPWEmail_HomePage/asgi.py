@@ -11,6 +11,7 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Django_LogIn_UserAuth_Alison.settings')
+#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Django_LogIn_UserAuth_Alison.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Login_SignUp_ResetPWEmail_HomePage.settings')
 
 application = get_asgi_application()
