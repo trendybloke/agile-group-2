@@ -1,0 +1,8 @@
+<h1>Browse ETFs</h1>
+<ul>
+{% for etf in etf_list %}
+    {% include "etf_browse_listing.html" with etf_symbol=etf.symbol %}
+{% empty %}
+    <li>No ETFs available</li>
+{% endfor %}
+</ul>

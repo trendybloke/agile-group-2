@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "accounts",
+    "etfs",
     "Login_SignUp_ResetPWEmail_HomePage",
 ]
 

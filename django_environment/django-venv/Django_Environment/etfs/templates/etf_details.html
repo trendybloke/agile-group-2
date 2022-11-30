@@ -1,0 +1,18 @@
+<div>
+    <h1>{{ etf_symbol }}</h1>
+</div>
+<div>
+    <h2>£ Price per share<h2>
+</div>
+<div>
+    <h2>Cool chart<h2>
+</div>
+<div>
+    {% url 'purchase_etf' etf_symbol as purchase_url %}
+    {% if purchase_url %}
+        <h2><a href="{{ purchase_url }}">Buy</a></h2>
+    {% endif %}
+</div>
+<div>
+    <h2>Purchase history</h2>
+</div>

@@ -1,0 +1,11 @@
+{% url 'etf_details' etf_symbol as details_url %}
+{% url 'purchase_etf' etf_symbol as purchase_url %}
+{% if details_url %}
+    <div>
+        <h3>
+            <a href="{{ details_url }}">{{ etf_symbol }}</a>
+            +/- 0.00 
+            <a href="{{ purchase_url }}">Buy</a>
+        </h3>
+    </div>
+{% endif %}
