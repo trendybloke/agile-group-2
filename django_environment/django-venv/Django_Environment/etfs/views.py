@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import ETF
+import yfinance as yf
 
 def etf_browse(request):
     """
@@ -13,6 +14,10 @@ def etf_browse(request):
     context = {}
     
     etfs = ETF.objects.all()
+    
+    # for etf in etfs:
+        # revenueGrowth / earningsGrowth
+        
     
     context["etf_list"] = etfs
     
@@ -28,6 +33,21 @@ def etf_details(request, etf_symbol):
         requestedEtf = ETF.objects.get(symbol = etf_symbol)
         context["etf_symbol"] = requestedEtf.symbol
         
+        # Dictionary containing up to date info on the passed ETF
+        etf_details = yf.Ticker(etf_symbol).info
+        
+        context["etf_data"] = etf_details
+        
+        context["etf_long_name"] = etf_details["longName"]
+        
+        context["etf_price"] = etf_details["currentPrice"]
+        
+        context["etf_summary"] = etf_details["longBusinessSummary"]
+        
+        context["etf_website"] = etf_details["website"]
+        
+        context["etf_logo"] = etf_details["logo_url"]
+        
         return render(request, "etf_details.html", context)
     # Not found; redirect to browse
     except ObjectDoesNotExist:
@@ -42,6 +62,14 @@ def purchase_etf(request, etf_symbol):
     try:
         requestedEtf = ETF.objects.get(symbol = etf_symbol)
         context["etf_symbol"] = requestedEtf.symbol
+        
+        etf_details = yf.Ticker(etf_symbol).info
+        
+        context["etf_long_name"] = etf_details["longName"]
+
+        context["etf_price"] = etf_details["currentPrice"]
+        
+        context["etf_logo"] = etf_details["logo_url"]
         
         return render(request, "purchase_etf.html", context)
     # Not found; redirect to browse

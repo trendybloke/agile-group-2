@@ -1,8 +1,8 @@
 <div>
-    <h1>{{ etf_symbol }}</h1>
+    {% include "etf_name.html" %}
 </div>
 <div>
-    <h2>£ Price per share<h2>
+    <h2>£{{ etf_price }} per share<h2>
 </div>
 <div>
     <input placeholder="Amount..." type="number" min="1">
