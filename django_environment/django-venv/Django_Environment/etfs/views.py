@@ -14,12 +14,21 @@ def etf_browse(request):
     context = {}
     
     etfs = ETF.objects.all()
+    etf_companies = {}
+    etf_growths = {}
     
-    # for etf in etfs:
-        # revenueGrowth / earningsGrowth
+    for etf in etfs:
+        etf_companies[etf.symbol] = yf.Ticker(etf.symbol).info["longName"]
+        growth = yf.Ticker(etf.symbol).info["revenueGrowth"]
         
+        if growth > 0:
+            growth = "+ " + str(growth)
+        
+        etf_growths[etf.symbol] =  growth
     
     context["etf_list"] = etfs
+    context["etf_companies"] = etf_companies.items()
+    context["etf_growths"] = etf_growths.items()
     
     return render(request, "etf_browse.html", context)
 
