@@ -38,8 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "accounts",
+    "etfs",
     "Login_SignUp_ResetPWEmail_HomePage",
+
+    #pip install django-crispy-forms + pip install twilio
+    'crispy_forms'
 ]
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -117,7 +124,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -127,6 +134,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # django_project/settings.py
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home" 
+LOGIN_URL = '/login/'
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
