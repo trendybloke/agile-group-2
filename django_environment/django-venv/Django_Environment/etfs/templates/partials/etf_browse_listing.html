@@ -6,6 +6,14 @@
             <a href="{{ details_url }}"><strong>{{ etf_symbol }}</strong></a> 
         </td>
         <td>
+            {% for key, value in etf_quotetypes %}
+                {% if key == etf_symbol %}
+                    <p>{{ value }}</p>
+                {% endif %}
+            {% endfor%}
+            <p></p>
+        </td>
+        <td>
             {% for key, value in etf_companies %}
                 {% if key == etf_symbol %}
                     <p>{{ value }}</p>
