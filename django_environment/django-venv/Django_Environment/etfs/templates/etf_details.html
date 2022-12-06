@@ -1,26 +1,28 @@
-{% include 'base.html' %}
-<div>
-    {% include "etf_name.html" %}
+{% include 'partials/base.html' %}
+<div class="container">
     <div>
-        <h2>Cool chart<h2>
+        {% include "partials/etf_name.html" %}
+        <div>
+            <h2>Cool chart<h2>
+        </div>
+        <h2>Summary</h2>
+        <p>{{ etf_summary }}</p>
+        <P>Website: <a href="{{etf_website}}">{{ etf_website }}</a></p>
     </div>
-    <h2>Summary</h2>
-    <p>{{ etf_summary }}</p>
-    <P>Website: <a href="{{etf_website}}">{{ etf_website }}</a></p>
-</div>
-<div>
-    <h2>£{{ etf_price }} per share<h2>
-    {% url 'purchase_etf' etf_symbol as purchase_url %}
-    {% if purchase_url %}
-    <h2><a href="{{ purchase_url }}">Buy</a></h2>
-    {% endif %}
-</div>
-<div>
-    <h2>Purchase history</h2>
-</div>
-<!--
     <div>
-        <h1>DATA</h1>
-        <p>{{ etf_data }}</p>
+        <h2>£{{ etf_price }} per share<h2>
+        {% url 'purchase_etf' etf_symbol as purchase_url %}
+        {% if purchase_url %}
+        <h2><a href="{{ purchase_url }}">Buy</a></h2>
+        {% endif %}
     </div>
--->
+    <div>
+        <h2>Purchase history</h2>
+    </div>
+    <!--
+        <div>
+            <h1>DATA</h1>
+            <p>{{ etf_data }}</p>
+        </div>
+    -->
+</div>
