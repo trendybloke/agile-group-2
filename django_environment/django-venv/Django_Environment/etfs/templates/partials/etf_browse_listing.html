@@ -12,6 +12,14 @@
                 {% endif %}
             {% endfor %}
         </td>
+        <td>-Chart-</td>
+        <td>
+            {% for key, value in etf_prices %}
+                {% if key == etf_symbol %}
+                    <p>{{ value }}</p>
+                {% endif %}
+            {% endfor %}
+        </td>
         <td>
             {% for key, value in etf_growths %}
                 {% if key == etf_symbol %}
@@ -19,7 +27,6 @@
                 {% endif %}
             {% endfor %}
         </td>
-
         <td>
             <a href="{{ purchase_url }}">Buy</a>
         </td>

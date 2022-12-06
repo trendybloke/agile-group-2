@@ -1,4 +1,4 @@
-{% include 'base.html' %}
+{% include 'partials/base.html' %}
 <body> 
     <div class="container">
         <div class="row">
@@ -8,13 +8,15 @@
                     <tr>
                         <th scope="col">ETF Symbol</th>
                         <th scope="col">Company</th>
+                        <th scope="col">History</th>
+                        <th scope="col">Price (£)</th>
                         <th scope="col">Growth</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody> 
                     {% for etf in etf_list %}
-                        {%  include "etf_browse_listing.html" with etf_symbol=etf.symbol %}
+                        {%  include "partials/etf_browse_listing.html" with etf_symbol=etf.symbol %}
                     {% empty %}
                         <li>No ETFs available</li>
                     {% endfor %}
