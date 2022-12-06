@@ -1,5 +1,7 @@
 <h1>
-    <img src="{{ etf_logo }}"/>
+    {% if etf_logo %}
+        <img src="{{ etf_logo }}"/>
+    {% endif %}
     {{ etf_symbol }} 
     -
     {{ etf_long_name }}
