@@ -32,7 +32,82 @@ from django.urls import reverse
 from django.conf import settings
 
 """Models defined below"""
+class User_Details(models.Model):
+    """Model to hold additional details required for a user to engage in EFT trading."""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.RESTRICT, related_name = 'User')
+    address_first_line = models.CharField(max_length = 255)
+    address_second_line = models.CharField(blank = True, max_length = 255)
+    address_city = models.CharField(max_length = 189)
+    address_postcode = models.CharField(max_length = 8)
+    ni = models.CharField(max_length = 9)
+    passport_path = models.CharField(max_length = 255)
+    card_number = models.CharField(max_length = 255)
+    card_last_4 = models.CharField(max_length = 255)
+    validated = models.BooleanField(default = False)
+    validated_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.RESTRICT, related_name = 'Validated_by')
 
+    def display_user(self):
+        """Method to request linked user"""
+        return self.user
+
+    def display_validated_by(self):
+        """Method to request linked validating user"""
+        return self.validated_by
+
+    def __str__(self):
+        """Method to return a string representation of the user details."""
+        return f'user: {self.user}, address_first_line: {self.address_first_line}, address_second_line: {self.address_second_line}, address_city: {self.address_city}, address_postcode: {self.address_postcode}, ni: {self.ni}, passport_path: {self.passport_path}, card_number: {self.card_number}, card_last_4: {self.card_last_4}, validated: {self.validated}, validated_by: {self.validated_by}'
+
+class Account(models.Model):
+    """Class To store a users balance details"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.RESTRICT)
+    balance = models.DecimalField(decimal_places = 2 , max_digits = 10 )
+    last_update = models.DateField()
+
+    def display_user(self):
+        """Method to request linked user"""
+        return self.user
+
+    def __str__(self):
+        """Method to return a String representation of the Account"""
+        return f'User: {self.user}, Balance: {self.balance}, last Updated: {self.last_update}'
+    
+    def update_balance(self,amount,type):
+        """method to change balance of an account"""
+        #find direction of funds from type
+        # add or subtract the amount depending on type
+        print("balance edited") 
+        
+class Transaction_Type(models.Model):
+    """Class to house the type and direction of transactions (either credit or debit)"""
+    description = models.CharField(max_length = 255)
+    direction = models.CharField(max_length = 255)
+
+    def __str__(self):
+        return f'Description: {self.description}, credit/debit: {self.direction}'
+
+
+class Transaction(models.Model):
+    """Class to store details about transactions eg trading EFT or changing account balance"""
+    account = models.ForeignKey('Account', on_delete = models.RESTRICT)
+    type = models.ForeignKey('Transaction_Type',on_delete = models.RESTRICT)
+    amount = models.DecimalField(decimal_places = 2, max_digits = 10 )
+    details = models.CharField(max_length = 255)
+
+    def __str__(self):
+        return f'account: {self.account}, type: {self.type}, amount: {self.amount}, details: {self.details}'
+
+    def get_absolute_url(self):
+        """Method to allow Access to an individual record from the browser"""
+        return reverse('Transaction', args = [str(self.id)])
+
+    def get_account(self):
+        """Method to return the related account"""
+        return self.account
+
+    def get_type(self):
+        """method to return the related Transaction type"""
+        return self.type
 class ETF(models.Model):
     """Model For Representing An ETF"""
     symbol = models.CharField(max_length = 20)
