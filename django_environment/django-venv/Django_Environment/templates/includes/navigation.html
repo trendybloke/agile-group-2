@@ -38,7 +38,8 @@
       </ul>
 
       <ul class="navbar-nav ms-auto">
-        <button class="btn bg-gradient-primary mb-0">Sign Up</button>
+        {% url 'signup' as signup_url %}
+        <a class="btn bg-gradient-primary mb-0" href="{{ signup_url }}">Sign Up</a>
       </ul>
     </div>
   </div>
