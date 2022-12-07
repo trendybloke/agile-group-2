@@ -5,7 +5,11 @@
         <h2>Cool chart</h2>
     </div>
     <div>
-        <h2>{{ etf_price }} per share<h2>
+        {% if etf_amount %}
+            <h2>{{ etf_price }} per {{ etf_amount }} share(s)<h2>
+        {% else %}
+            <h2>{{ etf_price }} per share<h2>
+        {% endif %}
     </div>
     <div>
         <input placeholder="Amount..." type="number" min="1">
