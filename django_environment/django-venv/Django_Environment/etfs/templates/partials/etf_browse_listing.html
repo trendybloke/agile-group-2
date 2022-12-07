@@ -31,7 +31,7 @@
         <td>
             {% for key, value in etf_growths %}
                 {% if key == etf_symbol %}
-                    <p>{{ value }}</p>
+                    <p {% if value.0 == '+' %} class="text-success" {% elif value.0 == '-' %} class="text-danger" {% endif %}>{{ value }}</p>
                 {% endif %}
             {% endfor %}
         </td>
