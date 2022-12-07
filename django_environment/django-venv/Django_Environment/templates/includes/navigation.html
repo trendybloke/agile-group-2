@@ -1,0 +1,48 @@
+<nav
+  class="navbar navbar-expand-lg navbar-light bg-white z-index-3 py-3">
+  <div class="container">
+    <a class="navbar-brand" href="" rel="tooltip" title="Investnftr" data-placement="bottom" target="_blank">
+      Investnftr 
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navigation">
+      <ul class="navbar-nav navbar-nav-hover mx-auto">
+        <li class="nav-item px-3">
+          {% url 'browse_etfs' as browse_url%}
+          <a class="nav-link" href="{{ browse_url }}">
+            Browse
+          </a>
+        </li>
+
+        <!--
+          <li class="nav-item px-3">
+            <a class="nav-link" href="">
+              ETFs
+            </a>
+          </li>
+        -->
+
+        <li class="nav-item px-3">
+          <a class="nav-link">
+            Portfolio
+          </a>
+        </li>
+
+        <li class="nav-item px-3">
+          <a class="nav-link ">
+            Profile
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <button class="btn bg-gradient-primary mb-0">Sign Up</button>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- End Navbar -->
+
+

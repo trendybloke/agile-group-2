@@ -17,19 +17,16 @@
     />
 
     <title>
-      {% block title %}Agile Group2 ETF Site{% endblock %}
+      {% block title %}Investnftr{% endblock %}
     </title>
   </head>
-  <body>
-    <div class="sidenav">
-      <a href="/">Home</a>
-      <a href="/signup/">Sign Up</a>
-      <a href="/login/">Log in</a>
-    </div>
-    <div id="content" , name="content" , class="main">
-        
-      <main>{% block content %} {% endblock %}</main>
-    </div>
+  <body class="{% block body_class %}{% endblock body_class %}">
+    {% include "includes/navigation.html" %}
+
+    {% block content %}{% endblock content %}
+
+    <!-- Specific JS goes HERE --> 
+    {% block javascripts %}{% endblock javascripts %}
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
