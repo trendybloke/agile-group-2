@@ -62,6 +62,8 @@ def etf_browse(request):
         
         if growth and growth > 0:
             growth = "+ " + str(growth)
+        elif growth and growth < 0:
+            growth = str(growth)[0] + " " + str(growth)[1:]
         
         price = str(round(etf_info[price_data], 2)) + " " + etf_info["currency"]
     
