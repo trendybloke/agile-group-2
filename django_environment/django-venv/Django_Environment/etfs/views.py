@@ -4,10 +4,11 @@ Views for ETF pages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
+from django.template.defaulttags import register
 from accounts.models import ETF
 import yfinance as yf
 
-def buildContext(etf_details):
+def buildDetailedContext(etf_details):
     context = {}
     # context["etf_data"] = etf_details
     
@@ -27,6 +28,10 @@ def buildContext(etf_details):
 
     return context
 
+@register.filter
+def get_value(dictionary, key):
+    return dictionary.get(key)
+
 def etf_browse(request):
     """
     Request for ETF browse page
@@ -34,22 +39,20 @@ def etf_browse(request):
     context = {}
     
     etfs = ETF.objects.all()
-    etf_companies = {}
-    etf_growths = {}
-    etf_prices = {}
-    etf_quotetypes = {}
+    
+    etf_data = {}
     
     for etf in etfs:
+        specific_etf_data = {}
         etf_info = yf.Ticker(etf.symbol).info
         
         # print("\n\n" + str(etf_info))
 
-        etf_companies[etf.symbol] = etf_info["longName"]
+        specific_etf_data['company'] = etf_info["longName"]
+        specific_etf_data['quoteType'] = etf_info["quoteType"]
         
         price_data = str()
         price = str()
-
-        etf_quotetypes[etf.symbol] = etf_info["quoteType"]
         
         if(etf_info["quoteType"] == "ETF"):
             price_data = "regularMarketPrice"
@@ -57,8 +60,6 @@ def etf_browse(request):
         else:
             price_data = "currentPrice"
             growth = etf_info["revenueGrowth"]
-    
-        # growth = etf_info[growth_data]
         
         if growth and growth > 0:
             growth = "+ " + str(growth)
@@ -67,14 +68,15 @@ def etf_browse(request):
         
         price = str(round(etf_info[price_data], 2)) + " " + etf_info["currency"]
     
-        etf_growths[etf.symbol] =  growth
-        etf_prices[etf.symbol] = price
+        specific_etf_data['growth'] = growth
+        specific_etf_data['price'] = price
+        
+        etf_data[etf.symbol] = specific_etf_data
 
     context["etf_list"] = etfs
-    context["etf_companies"] = etf_companies.items()
-    context["etf_growths"] = etf_growths.items()
-    context["etf_prices"] = etf_prices.items()
-    context["etf_quotetypes"] = etf_quotetypes.items()
+    context["etf_data"] = etf_data
+    
+    # print(context["etf_data"])
     
     return render(request, "etf_browse.html", context)
 

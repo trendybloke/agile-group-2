@@ -4,6 +4,7 @@ from django.urls import reverse, resolve
 from accounts.models import ETF, ETF_instance
 from account.views import SignUpView
 
+
 class ETFModelTests(TestCase):
     """Tests for the ETF Model"""
     def setUp(self):

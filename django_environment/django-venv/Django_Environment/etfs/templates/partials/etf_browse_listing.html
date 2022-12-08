@@ -1,42 +1,27 @@
 {% url 'etf_details' etf_symbol as details_url %}
 {% url 'purchase_etf' etf_symbol as purchase_url %}
 {% if details_url %}
-    <tr>
-        <td>
-            <a href="{{ details_url }}"><strong>{{ etf_symbol }}</strong></a> 
-        </td>
-        <td>
-            {% for key, value in etf_quotetypes %}
-                {% if key == etf_symbol %}
-                    <p>{{ value }}</p>
-                {% endif %}
-            {% endfor%}
-            <p></p>
-        </td>
-        <td>
-            {% for key, value in etf_companies %}
-                {% if key == etf_symbol %}
-                    <p>{{ value }}</p>
-                {% endif %}
-            {% endfor %}
-        </td>
-        <td>-Chart-</td>
-        <td>
-            {% for key, value in etf_prices %}
-                {% if key == etf_symbol %}
-                    <p>{{ value }}</p>
-                {% endif %}
-            {% endfor %}
-        </td>
-        <td>
-            {% for key, value in etf_growths %}
-                {% if key == etf_symbol %}
-                    <p {% if value.0 == '+' %} class="text-success" {% elif value.0 == '-' %} class="text-danger" {% endif %}>{{ value }}</p>
-                {% endif %}
-            {% endfor %}
-        </td>
-        <td>
-            <a href="{{ purchase_url }}">Buy</a>
-        </td>
-    </tr>
+<tr>
+    {% with specific_etf_data=etf_data|get_value:etf_symbol %}
+    <td>
+        <a href="{{ details_url }}"><strong>{{ etf_symbol }}</strong></a> 
+    </td>
+    <td>
+        <p>{{ specific_etf_data.quoteType }}</p>
+    </td>
+    <td>
+        <p>{{ specific_etf_data.company }}</p>
+    </td>
+    <td>-Chart-</td>
+    <td>
+        <p>{{ specific_etf_data.price }}</p>
+    </td>
+    <td>
+        <p {% if specific_etf_data.growth.0 == '+' %} class="text-success" {% elif specific_etf_data.growth.0 == '-' %} class="text-danger" {% endif %}>{{ specific_etf_data.growth }}</p>
+    </td>
+    <td>
+        <a href="{{ purchase_url }}">Buy</a>
+    </td>
+    {% endwith %}
+</tr>
 {% endif %}
