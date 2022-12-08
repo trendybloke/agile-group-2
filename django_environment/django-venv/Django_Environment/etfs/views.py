@@ -90,7 +90,7 @@ def etf_details(request, etf_symbol):
         # Dictionary containing up to date info on the passed ETF
         etf_details = yf.Ticker(requestedEtf.symbol).info
 
-        context = buildContext(etf_details)
+        context = buildDetailedContext(etf_details)
         
         return render(request, "etf_details.html", context)
     # Not found; redirect to browse
@@ -109,7 +109,7 @@ def purchase_etf(request, etf_symbol):
         # Dictionary containing up to date info on the passed ETF
         etf_details = yf.Ticker(requestedEtf.symbol).info
 
-        context = buildContext(etf_details)
+        context = buildDetailedContext(etf_details)
         
         return render(request, "purchase_etf.html", context)
     # Not found; redirect to browse
