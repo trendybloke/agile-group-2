@@ -2,7 +2,8 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 
 from accounts.models import ETF, ETF_instance
-from accounts.view import SignUpView
+from account.views import SignUpView
+
 
 class ETFModelTests(TestCase):
     """Tests for the ETF Model"""
@@ -32,7 +33,7 @@ class ETF_instanceModelTests(TestCase):
     def test_ETF_instance_absolute_url(self):
         """Test to ensure that the absolute URL method works as expected"""
         self.assertEqual(self.test_ETF_instance.get_absolute_url(), reverse('ETF_instance_detail', args = [str(self.test_ETF_instance.id)]))
-        
+
 # Signup urls test
 class TestUrls(SimpleTestCase):
     
@@ -42,6 +43,3 @@ class TestUrls(SimpleTestCase):
         print(resolve(url))
         # to check if the resolved url function == singupView 
         self.assertEquals(resolve(url).func.view_class, SignUpView)
-        
-   
-        
