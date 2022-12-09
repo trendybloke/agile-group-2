@@ -5,7 +5,10 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.defaulttags import register
-from accounts.models import ETF
+from django.views.decorators.http import require_http_methods
+from decimal import Decimal
+from datetime import date
+from accounts.models import ETF, ETF_instance, Account, CustomUser
 import yfinance as yf
 
 def buildDetailedContext(etf_details):
@@ -97,10 +100,14 @@ def etf_details(request, etf_symbol):
     except ObjectDoesNotExist:
         return redirect(etf_browse)
 
+@require_http_methods(["GET"])
 def purchase_etf(request, etf_symbol):
     """
     Request for ETF purchase page
     """
+    if request.method == "POST":
+        return redirect(instantiate_etf, etf_symbol)
+    
     context = {}
     
     try:
@@ -115,3 +122,41 @@ def purchase_etf(request, etf_symbol):
     # Not found; redirect to browse
     except ObjectDoesNotExist:
         return redirect(etf_browse)
+
+@require_http_methods(["POST"])
+def instantiate_etf(request, etf_symbol):
+    """ POST request when buying an ETF. """
+    if request.method != "POST":
+        return redirect(etf_browse)
+    
+    # Find username from request (session data?)
+    user_username = request.POST.dict()['username']
+    
+    try:
+        # Find if user, their account, and ETF exist    
+        user_obj = CustomUser.objects.get(username=user_username)
+        user_account = Account.objects.get(user=user_obj)
+        etf_obj = ETF.objects.get(symbol=etf_symbol)
+        
+        etf_info = yf.Ticker(etf_symbol).info
+        
+        etf_price = 0
+        
+        if etf_info["quoteType"] == "ETF":
+            etf_price = round(Decimal(etf_info["regularMarketPrice"]), 2)
+        else:
+            etf_price = round(Decimal(etf_info["currentPrice"]), 2)
+        
+        # Create and save new instance
+        ETF_instance.objects.create(user=user_obj, ETF=etf_obj, price_on_create=etf_price, date_created=date.today())
+        
+        # Change account balance
+        user_account.update_balance(etf_price, '-')
+        user_account.save()
+        
+        request.session["success_msg"] = "Purchased " + etf_symbol + "! Click 'portfolio' to view."
+    except ObjectDoesNotExist as e:    
+        # If account does not exist, redirect to portfolio (or wherever they can create an account)
+        request.session["error_msg"] = e.__str__
+    # Redirect to browse
+    return redirect(etf_browse)

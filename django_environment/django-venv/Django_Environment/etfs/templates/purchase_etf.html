@@ -12,7 +12,10 @@
         {% endif %}
     </div>
     <div>
-        <input placeholder="Amount..." type="number" min="1">
-        <button>Pay now</button>
+        <form method="post" action={% url 'instantiate_etf' etf_symbol %}>
+            {% csrf_token %}
+            <button class="btn btn-outline-primary" type="submit">Pay now</button>
+            <input type="hidden" value="a_test" name="username"/>
+        </form>
     </div>
 </div>
