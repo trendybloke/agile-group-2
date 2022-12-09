@@ -39,6 +39,9 @@ def portfolio(request, username):
             
         etf_data = {}
         
+        total_portfolio_worth = 0
+        total_portfolio_investment = 0
+        
         for etf_symbol, etf_bought_price in etfs.items():
             specific_etf_data = {}
             etf_info = yf.Ticker(etf_symbol).info
@@ -63,11 +66,28 @@ def portfolio(request, username):
                 
             price = str(round(etf_info[price_data], 2)) + " " + etf_info["currency"]
             
+            total_portfolio_worth += etf_info[price_data]
+            total_portfolio_investment += etf_bought_price
+            
             specific_etf_data['growth'] = growth
             specific_etf_data['price'] = price
             specific_etf_data['bought_price'] = str(round(etf_bought_price, 2)) + " " + etf_info["currency"]
             
             etf_data[etf_symbol] = specific_etf_data
+        
+        context["total_price"] = str(round(total_portfolio_worth, 2)) + " USD"
+        context["total_spent"] = str(round(total_portfolio_investment, 2)) + " USD"
+        
+        total_net_growth = round(total_portfolio_worth - total_portfolio_investment, 2)
+        
+        if total_net_growth > 0:
+            total_net_growth = "+ " + str(total_net_growth)
+        elif total_net_growth < 0:
+            total_net_growth = "- " + str(total_net_growth)[1:]
+        
+        total_net_growth = total_net_growth + " USD"
+        
+        context["total_growth"] = total_net_growth
         
         context['etf_list'] = users_etf_instances
         context['etf_data'] = etf_data

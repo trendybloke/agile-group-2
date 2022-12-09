@@ -9,10 +9,6 @@
         <p>{{ specific_etf_data.quoteType }}</p>
     </td>
     <td>
-        <p>{{ specific_etf_data.company }}</p>
-    </td>
-    <td>-Chart-</td>
-    <td>
         <p>{{ specific_etf_data.price }}</p>
     </td>
     <td>
@@ -22,7 +18,9 @@
         <p {% if specific_etf_data.growth.0 == '+' %} class="text-success" {% elif specific_etf_data.growth.0 == '-' %} class="text-danger" {% endif %}>{{ specific_etf_data.growth }}</p>
     </td>
     <td>
-        <a>Sell</a>
+        {% if user_owns_page %}
+            <button class="btn btn-outline-primary btn-sm" type="submit">Sell</button>
+        {% endif %}
     </td>
     {% endwith %}
 </tr>
