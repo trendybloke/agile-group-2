@@ -15,9 +15,6 @@ class ETFModelTests(TestCase):
         """Test to ensure the __str__ method works as expected"""
         self.assertEqual(str(self.test_ETF), 'TEST')
 
-    def test_ETF_absolute_url(self):
-        """Test to ensure that the absolute URL method works as expected"""
-        self.assertEqual(self.test_ETF.get_absolute_url(), reverse('ETF-detail', args = [str(self.test_ETF.id)]))
 
 class ETF_instanceModelTests(TestCase):
     """Tests for the ETF_instance Model"""

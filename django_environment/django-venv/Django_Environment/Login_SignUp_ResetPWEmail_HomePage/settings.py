@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -76,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Login_SignUp_ResetPWEmail_HomePage.wsgi.application'#'Django_LogIn_UserAuth_Alison.wsgi.application'
+WSGI_APPLICATION = 'Login_SignUp_ResetPWEmail_HomePage.wsgi.application'
 
 
 # Database
@@ -120,11 +121,19 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Assets Management
+ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 
+
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -132,9 +141,8 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # django_project/settings.py
-LOGIN_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "/etf/browse"
 LOGOUT_REDIRECT_URL = "home" 
-LOGIN_URL = '/login/'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
