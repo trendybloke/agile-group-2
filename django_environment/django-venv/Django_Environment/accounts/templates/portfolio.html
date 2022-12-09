@@ -1,0 +1,32 @@
+{% include 'base.html' %}
+<body>
+    <div class="container">
+        <div class="row">
+            <h1>{{ username }}'s portfolio</h1>
+        </div>
+        <div class="row">
+            <h2>Owned ETFs</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Symbol</th>
+                        <th scope="col">Quote type</th>
+                        <th scope="col">Company</th>
+                        <th scope="col">History</th>
+                        <th scope="col">Current Price</th>
+                        <th scope="col">Bought at</th>
+                        <th scope="col">Growth</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for etf in etf_list %}
+                        {%  include "partials/etf_portfolio_listing.html" with etf_symbol=etf.ETF.symbol %}
+                    {% empty %}
+                        <td>No ETFs available</td>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
