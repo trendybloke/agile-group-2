@@ -1,9 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, SimpleTestCase
 from django.urls import reverse, resolve
 
 from accounts.models import ETF, ETF_instance
-from account.views import SignUpView
-
+from accounts.views import SignUpView
 
 class ETFModelTests(TestCase):
     """Tests for the ETF Model"""
