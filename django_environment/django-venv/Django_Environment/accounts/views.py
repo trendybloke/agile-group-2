@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
+from django.http import HttpResponse
 from django.template.defaulttags import register
 from django.core.exceptions import ObjectDoesNotExist
 from Login_SignUp_ResetPWEmail_HomePage import views as home_views
 from etfs import views as etf_views
+from decimal import Decimal
 import accounts.models as models
 import yfinance as yf
 
@@ -30,18 +32,19 @@ def portfolio(request, username):
         context["username"] = user_obj.username
         
         # Get all ETF_instances belonging to user
-        users_etf_instances = models.ETF_instance.objects.filter(user = user_obj)
+        users_etf_instances = models.ETF_instance.objects.filter(user = user_obj, is_deleted=False)
         
         # Get all ETFs inside ETF_instances
         etfs = {}
         for etf_instance in users_etf_instances:
-            etfs[etf_instance.display_ETF().symbol] = etf_instance.price_on_create
+                etfs[etf_instance.display_ETF().symbol] = etf_instance.price_on_create
             
         etf_data = {}
         
         total_portfolio_worth = 0
         total_portfolio_investment = 0
         
+        # Get data for each ETF
         for etf_symbol, etf_bought_price in etfs.items():
             specific_etf_data = {}
             etf_info = yf.Ticker(etf_symbol).info
@@ -75,6 +78,13 @@ def portfolio(request, username):
             
             etf_data[etf_symbol] = specific_etf_data
         
+        # Generate breakdown statistics
+        try:
+            user_account = models.Account.objects.get(user=user_obj)
+            context["account_balance"] = "Account balance: " + str(user_account.balance) + " USD"
+        except ObjectDoesNotExist:
+            context["account_balance"] = "Set up account"
+        
         context["total_price"] = str(round(total_portfolio_worth, 2)) + " USD"
         context["total_spent"] = str(round(total_portfolio_investment, 2)) + " USD"
         
@@ -85,7 +95,7 @@ def portfolio(request, username):
         elif total_net_growth < 0:
             total_net_growth = "- " + str(total_net_growth)[1:]
         
-        total_net_growth = total_net_growth + " USD"
+        total_net_growth = str(total_net_growth) + " USD"
         
         context["total_growth"] = total_net_growth
         
@@ -95,4 +105,48 @@ def portfolio(request, username):
         return render(request, "portfolio.html", context)
     except ObjectDoesNotExist:
         return redirect(etf_views.etf_browse)
+
+def sell_etf(request, username):
+    """ POST request received when a user wants to sell an ETF instance """
+    if request.method != "POST":
+        return redirect(etf_views.etf_browse)
     
+    try:
+        # Find user's ETF instance from request
+        request_dict = request.POST.dict()
+               
+        etf_symbol = request_dict['etf_symbol']
+        
+        etf_obj = models.ETF.objects.get(symbol=etf_symbol)
+        
+        etf_info = yf.Ticker(etf_symbol).info
+        
+        etf_price = 0
+        
+        if etf_info["quoteType"] == "ETF":
+            etf_price = round(Decimal(etf_info["regularMarketPrice"]), 2)
+        else:
+            etf_price = round(Decimal(etf_info["currentPrice"]), 2)
+        
+        user_obj = models.CustomUser.objects.get(username=username)
+        
+        # Will Throw DoesNotExist if fails
+        etf_instance = models.ETF_instance.objects.get(ETF=etf_obj, user=user_obj)
+        
+        # Add current price to account balance
+        user_account = models.Account.objects.get(user=user_obj)
+        
+        user_account.update_balance(amount=etf_price, type="+")
+        
+        # Mark ETF instance as 'deleted'
+        etf_instance.is_deleted = True
+        
+        # Save instance and account
+        etf_instance.save()
+        user_account.save()
+        
+        request.session["success_msg"] = "Sold " + etf_symbol + ". " + str(etf_price) + " USD added to balance." 
+    except Exception as e:
+        request.session["error_msg"] = e.__str__
+    
+    return redirect(portfolio, username)

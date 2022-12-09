@@ -1,12 +1,13 @@
 {% include 'base.html' %}
+<!-- Debug var. Needs replacing with proper authorisation. -->
+{% with user_owns_page=1%}
 <body>
     <div class="container">
         <div class="row">
             <h1>{{ username }}'s portfolio</h1>
         </div>
-
-        
-        <div class="row d-flex align-items-center">
+        <br>
+        <div class="row d-flex align-items-top">
             <div class="col- align-items-center">
                 <div class="card">
                     <div class="card-header">
@@ -14,6 +15,9 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-group">
+                            {% if user_owns_page %}
+                                <li class="list-group-item">{{ account_balance }}</li>
+                            {% endif %}
                             <li class="list-group-item">Current worth: {{ total_price }}</li>
                             <li class="list-group-item">Total investment: {{ total_spent }}</li>
                             {% if total_growth.0 == '+' %}
@@ -26,6 +30,16 @@
                 </div>
             </div>
             <div class="col">
+                {% if request.session.success_msg %}
+                    <div class="alert alert-success" role="alert">
+                        {{ request.session.success_msg }}
+                    </div>
+                {% endif %}
+                {% if request.session.error_msg %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ request.session.error_msg }}
+                    </div>
+                {% endif %}
                 <h2>Owned ETFs</h2>
                 <table class="table">
                     <thead>
@@ -41,9 +55,9 @@
                     <tbody>
                         {% for etf in etf_list %}
                             <!-- Set user_owns_page to 1 if this is the user's page, otherwise it should be 0. -->
-                            {%  include "partials/etf_portfolio_listing.html" with etf_symbol=etf.ETF.symbol user_owns_page=1 %}
+                            {%  include "partials/etf_portfolio_listing.html" with etf_symbol=etf.ETF.symbol %}
                         {% empty %}
-                            <td>No ETFs available</td>
+                            <td>There are no ETFs in this portfolio</td>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -51,3 +65,4 @@
         </div>
     </div>
 </body>
+{% endwith %}
