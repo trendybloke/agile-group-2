@@ -57,9 +57,9 @@ def portfolio(request, username):
             growth = round(etf_info[price_data] - etf_bought_price, 2)
             
             if growth and growth > 0:
-                growth = '+ ' + str(growth)
+                growth = '+ ' + str(growth) + etf_info["currency"]
             elif growth and growth < 0:
-                growth = str(growth)[0] + " " + str(growth)[1:]
+                growth = str(growth)[0] + " " + str(growth)[1:] + etf_info["currency"]
                 
             price = str(round(etf_info[price_data], 2)) + " " + etf_info["currency"]
             
