@@ -127,6 +127,7 @@ class ETF_instance(models.Model):
     date_created = models.DateField()
     is_deleted = models.BooleanField(default = False)
     ETF = models.ForeignKey('ETF', on_delete = models.RESTRICT)
+    price_on_create = models.FloatField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.RESTRICT, null = True, blank = True)
 
     def display_ETF(self):

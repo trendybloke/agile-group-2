@@ -25,7 +25,8 @@
         -->
 
         <li class="nav-item px-3">
-          <a class="nav-link">
+          {% url 'portfolio' username='a_test' as portfolio_url %}
+          <a class="nav-link" href="{{ portfolio_url }}">
             Portfolio
           </a>
         </li>
@@ -39,7 +40,9 @@
 
       <ul class="navbar-nav ms-auto">
         {% url 'signup' as signup_url %}
-        <a class="btn bg-gradient-primary mb-0" href="{{ signup_url }}">Sign Up</a>
+        <a class="btn bg-gradient-primary mb-0" href="{{ signup_url }}">
+          Sign Up
+        </a>
       </ul>
     </div>
   </div>
