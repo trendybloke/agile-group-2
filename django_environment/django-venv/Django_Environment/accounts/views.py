@@ -34,7 +34,7 @@ def register_user(request):
             msg = 'User created - please <a href="accounts/login">login</a>.'
             success = True
 
-            return redirect("/etf/browse")
+            return redirect("/login")
 
         else:
             msg = 'Form is not valid'

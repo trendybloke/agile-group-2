@@ -6,6 +6,7 @@ from Login_SignUp_ResetPWEmail_HomePage.forms import CodeForm
 from accounts.models import CustomUser
 from .forms import LoginForm, SignUpForm
 from etfs import views as etf_views
+#from paypal.standard.forms import PayPalPaymentsForm
 
 @login_required
 def home_view(request):
