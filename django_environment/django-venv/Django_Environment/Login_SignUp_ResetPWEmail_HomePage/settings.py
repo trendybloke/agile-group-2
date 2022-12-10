@@ -160,4 +160,4 @@ EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
 #PAYPAL Settings
 PAYPAL_TEST = True
 
-PAYPAL_RECEIVER_EMAIL = 'sandbox@gmail.com'
+PAYPAL_RECEIVER_EMAIL = 'am12crt@bolton.ac.uk'

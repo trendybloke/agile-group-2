@@ -1,5 +1,7 @@
 {% extends "base.html" %} 
 
-{%block body%}
-<h2>{{user.username}}</h2>
-{%endblock%}
+{% block content %}
+<div class="container">
+<h2>{{user.username}}, what a nice profile you have.</h2>
+</div>
+{% endblock content %}
