@@ -3,6 +3,7 @@ Views for ETF pages
 """
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.defaulttags import register
 from django.views.decorators.http import require_http_methods
@@ -155,9 +156,10 @@ def instantiate_etf(request, etf_symbol):
         user_account.save()
         
         # request.session["success_msg"] = "Purchased " + etf_symbol + "! Click 'portfolio' to view."
+        messages.success(request, "Purchased " + etf_symbol + "! Click 'portfolio' to view.")
     except ObjectDoesNotExist as e:    
         # If account does not exist, redirect to portfolio (or wherever they can create an account)
         # request.session["error_msg"] = e.__str__
-        pass
+        messages.error(request, 'Ran into a problem: ' + e + ' Transaction cancelled.')
     # Redirect to browse
     return redirect(etf_browse)
