@@ -37,15 +37,15 @@ def portfolio(request, username):
         # Get all ETFs inside ETF_instances
         etfs = {}
         for etf_instance in users_etf_instances:
-                etfs[etf_instance.display_ETF().symbol] = etf_instance.price_on_create
-            
+                etfs[etf_instance.display_ETF().symbol] = (etf_instance.price_on_create, etf_instance.date_created, etf_instance.id)
+
         etf_data = {}
         
         total_portfolio_worth = 0
         total_portfolio_investment = 0
         
         # Get data for each ETF
-        for etf_symbol, etf_bought_price in etfs.items():
+        for etf_symbol, instance_data in etfs.items():
             specific_etf_data = {}
             etf_info = yf.Ticker(etf_symbol).info
             
@@ -60,7 +60,7 @@ def portfolio(request, username):
             else:
                 price_data = 'currentPrice'
             
-            growth = round(etf_info[price_data] - etf_bought_price, 2)
+            growth = round(etf_info[price_data] - instance_data[0], 2)
             
             if growth and growth > 0:
                 growth = '+ ' + str(growth) + etf_info["currency"]
@@ -70,11 +70,13 @@ def portfolio(request, username):
             price = str(round(etf_info[price_data], 2)) + " " + etf_info["currency"]
             
             total_portfolio_worth += etf_info[price_data]
-            total_portfolio_investment += etf_bought_price
+            total_portfolio_investment += instance_data[0]
             
             specific_etf_data['growth'] = growth
             specific_etf_data['price'] = price
-            specific_etf_data['bought_price'] = str(round(etf_bought_price, 2)) + " " + etf_info["currency"]
+            specific_etf_data['bought_price'] = str(round(instance_data[0], 2)) + " " + etf_info["currency"]
+            specific_etf_data['created_on'] = instance_data[1]
+            specific_etf_data['instance_id'] = instance_data[2]
             
             etf_data[etf_symbol] = specific_etf_data
         
@@ -115,9 +117,13 @@ def sell_etf(request, username):
         # Find user's ETF instance from request
         request_dict = request.POST.dict()
                
-        etf_symbol = request_dict['etf_symbol']
+        instance_id = request_dict['instance_id']
         
-        etf_obj = models.ETF.objects.get(symbol=etf_symbol)
+        # Will Throw DoesNotExist if fails
+        etf_instance = models.ETF_instance.objects.get(id=instance_id)
+        
+        # etf_obj = models.ETF.objects.get(symbol=etf_symbol)
+        etf_symbol = str(etf_instance.display_ETF())
         
         etf_info = yf.Ticker(etf_symbol).info
         
@@ -130,8 +136,6 @@ def sell_etf(request, username):
         
         user_obj = models.CustomUser.objects.get(username=username)
         
-        # Will Throw DoesNotExist if fails
-        etf_instance = models.ETF_instance.objects.get(ETF=etf_obj, user=user_obj)
         
         # Add current price to account balance
         user_account = models.Account.objects.get(user=user_obj)
@@ -145,8 +149,8 @@ def sell_etf(request, username):
         etf_instance.save()
         user_account.save()
         
-        request.session["success_msg"] = "Sold " + etf_symbol + ". " + str(etf_price) + " USD added to balance." 
     except Exception as e:
-        request.session["error_msg"] = e.__str__
+        print(str(e))
+        return redirect(portfolio, username)
     
     return redirect(portfolio, username)

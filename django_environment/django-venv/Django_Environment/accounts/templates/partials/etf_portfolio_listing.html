@@ -15,6 +15,9 @@
         <p>{{ specific_etf_data.bought_price }}</p>
     </td>
     <td>
+        <p>{{ specific_etf_data.created_on }}</p>
+    </td>
+    <td>
         <p {% if specific_etf_data.growth.0 == '+' %} class="text-success" {% elif specific_etf_data.growth.0 == '-' %} class="text-danger" {% endif %}>{{ specific_etf_data.growth }}</p>
     </td>
     <td>
@@ -22,7 +25,8 @@
             <form method="post" action={% url 'sell_etf' 'a_test' %}>
                 {% csrf_token %}
                 <button class="btn btn-outline-primary btn-sm" type="submit">Sell</button>
-                <input type="hidden" value="{{ etf_symbol }}" name="etf_symbol"/>
+                <!--<input type="hidden" value="{{ etf_symbol }}" name="etf_symbol"/>-->
+                <input type="hidden" value="{{ specific_etf_data.instance_id }}" name="instance_id">
                 <!-- <input type="hidden" value="a_test" name="username"/> -->
             </form>
         {% endif %}
