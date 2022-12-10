@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
@@ -149,8 +150,10 @@ def sell_etf(request, username):
         etf_instance.save()
         user_account.save()
         
+        messages.success(request, 'Sold ' + etf_symbol + ' for ' + str(etf_price) + ' USD!')
     except Exception as e:
         print(str(e))
+        messages.error(request, str('Ran into a problem: ' + e + ' Transaction canclled.'))
         return redirect(portfolio, username)
     
     return redirect(portfolio, username)
