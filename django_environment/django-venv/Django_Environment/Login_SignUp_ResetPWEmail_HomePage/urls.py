@@ -31,4 +31,5 @@ urlpatterns = [
     path('verify/', verify_view, name='verify_view'),
     path('etf/browse/', etf_views.etf_browse, name='browse_view'),
     path('logout/', LogoutView.as_view(), name="logout"),
+    path('paypal/', include('paypal.standard.ipn.urls')),
 ]
