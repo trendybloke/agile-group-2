@@ -154,9 +154,10 @@ def instantiate_etf(request, etf_symbol):
         user_account.update_balance(etf_price, '-')
         user_account.save()
         
-        request.session["success_msg"] = "Purchased " + etf_symbol + "! Click 'portfolio' to view."
+        # request.session["success_msg"] = "Purchased " + etf_symbol + "! Click 'portfolio' to view."
     except ObjectDoesNotExist as e:    
         # If account does not exist, redirect to portfolio (or wherever they can create an account)
-        request.session["error_msg"] = e.__str__
+        # request.session["error_msg"] = e.__str__
+        pass
     # Redirect to browse
     return redirect(etf_browse)
