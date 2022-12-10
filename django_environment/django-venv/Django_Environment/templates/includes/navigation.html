@@ -1,52 +1,59 @@
-<nav
-  class="navbar navbar-expand-lg navbar-light bg-white z-index-3 py-3">
-  <div class="container">
-    <a class="navbar-brand" href="" rel="tooltip" title="Investnftr" data-placement="bottom" target="_blank">
-      Investnftr 
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navigation">
-      <ul class="navbar-nav navbar-nav-hover mx-auto">
-        <li class="nav-item px-3">
-          {% url 'browse_etfs' as browse_url%}
-          <a class="nav-link" href="{{ browse_url }}">
-            Browse
-          </a>
-        </li>
-
-        <!--
-          <li class="nav-item px-3">
-            <a class="nav-link" href="">
-              ETFs
-            </a>
-          </li>
-        -->
-
-        <li class="nav-item px-3">
-          {% url 'portfolio' username='a_test' as portfolio_url %}
-          <a class="nav-link" href="{{ portfolio_url }}">
-            Portfolio
-          </a>
-        </li>
-
-        <li class="nav-item px-3">
-          <a class="nav-link ">
-            Profile
-          </a>
-        </li>
-      </ul>
-
-      <ul class="navbar-nav ms-auto">
-        {% url 'logout' as logout_url %}
-        <a class="btn bg-gradient-primary mb-0" href="{{ logout_url }}">
-          Log Out
+<nav class="navbar navbar-expand-lg navbar-light bg-white z-index-3 py-3">
+    <div class="container">
+        <a class="navbar-brand" href="" rel="tooltip" title="Investnftr" data-placement="bottom" target="_blank">
+            Investnftr
         </a>
-      </ul>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navigation">
+            <ul class="navbar-nav navbar-nav-hover mx-auto">
+                <li class="nav-item px-3">
+                    {% url 'browse_etfs' as browse_url %}
+                    <a class="nav-link" href="{{ browse_url }}">
+                        Browse ETFs
+                    </a>
+                </li>
+
+                <!--
+                          <li class="nav-item px-3">
+                            <a class="nav-link" href="">
+                              ETFs
+                            </a>
+                          </li>
+                        -->
+
+                <li class="nav-item px-3">
+                  {% if user.is_authenticated %}
+                    {% url 'portfolio' username='a_test' as portfolio_url %}
+                    <a class="nav-link" href="{{ portfolio_url }}">
+                        Portfolio
+                    </a>
+                </li>
+
+                <li class="nav-item px-3">
+                    
+                        <a class="nav-link" href="{% url 'profile' %}">
+                        Profile
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                {% url 'logout' as logout_url %}
+                <a class="btn bg-gradient-primary mb-0" href="{{ logout_url }}">
+                    Log Out
+                </a>
+            </ul>
+
+        {% else %}
+            <ul class="navbar-nav ms-auto">
+                <a class="btn bg-gradient-primary mb-0" href="{{ register_url }}">
+                    Register
+                </a>
+            </ul>
+            {%endif%}
+        </div>
     </div>
-  </div>
 </nav>
 <!-- End Navbar -->
-
-
