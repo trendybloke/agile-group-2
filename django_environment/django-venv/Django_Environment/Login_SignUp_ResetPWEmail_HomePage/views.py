@@ -6,7 +6,11 @@ from Login_SignUp_ResetPWEmail_HomePage.forms import CodeForm
 from accounts.models import CustomUser
 from .forms import LoginForm, SignUpForm
 from etfs import views as etf_views
+from django.shortcuts import render
 #from paypal.standard.forms import PayPalPaymentsForm
+
+from accounts.models import CustomUser
+User = CustomUser
 
 @login_required
 def home_view(request):
@@ -99,7 +103,10 @@ def register_user(request):
 
     return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
 
-
+    
+@login_required
+def profile(request):
+    return render(request,'users/profile.html')
 
 
         
