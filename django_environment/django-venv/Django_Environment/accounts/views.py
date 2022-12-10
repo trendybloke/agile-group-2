@@ -6,7 +6,9 @@ from django.views import generic
 from django.http import HttpResponse
 from django.template.defaulttags import register
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import authenticate, login
 from Login_SignUp_ResetPWEmail_HomePage import views as home_views
+from Login_SignUp_ResetPWEmail_HomePage.forms import LoginForm, SignUpForm
 from etfs import views as etf_views
 from decimal import Decimal
 import accounts.models as models
@@ -16,6 +18,30 @@ class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+
+def register_user(request):
+    msg = None
+    success = False
+
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password1")
+            user = authenticate(username=username, password=raw_password)
+
+            msg = 'User created - please <a href="accounts/login">login</a>.'
+            success = True
+
+            return redirect("/etf/browse")
+
+        else:
+            msg = 'Form is not valid'
+    else:
+        form = SignUpForm()
+
+    return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
 
 @register.filter
 def get_value(dictionary, key):

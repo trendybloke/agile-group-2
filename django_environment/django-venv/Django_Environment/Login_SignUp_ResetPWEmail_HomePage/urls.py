@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from .views import home_view, auth_view, verify_view
+from .views import auth_view, verify_view
+from django.contrib.auth.views import LogoutView
+from etfs import views as etf_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +26,9 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("etf/", include("etfs.urls")),
     path('', TemplateView.as_view(template_name='home.html'), name='home_view'),
-    path('login/', auth_view, name='login_view'),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('login/', auth_view, name='login'),
     path('verify/', verify_view, name='verify_view'),
+    path('etf/browse/', etf_views.etf_browse, name='browse_view'),
+    path('logout/', LogoutView.as_view(), name="logout"),
 ]
