@@ -77,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Login_SignUp_ResetPWEmail_HomePage.wsgi.application'
+WSGI_APPLICATION = 'Login_SignUp_ResetPWEmail_HomePage.wsgi.application'#'Django_LogIn_UserAuth_Alison.wsgi.application'
 
 
 # Database
@@ -121,12 +121,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Assets Management
-ASSETS_ROOT = os.getenv('ASSETS_ROOT', '/static/assets') 
-
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
@@ -141,8 +138,9 @@ STATICFILES_DIRS = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # django_project/settings.py
-LOGIN_REDIRECT_URL = "/etf/browse"
+LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home" 
+LOGIN_URL = '/login/'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

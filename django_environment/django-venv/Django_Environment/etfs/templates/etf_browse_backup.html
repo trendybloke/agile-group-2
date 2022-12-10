@@ -1,15 +1,13 @@
-{% extends 'base.html' %}
-
+{% include 'base.html' %}
 {% block content %}
-
 <section>
-    <div class="page-header section-height-100">
-      <div class="container">
-
-                <h4 class="font-weight-bolder">Browse ETFs</h4>
-                  <div class="text-center">
-                    
-                <table class="table">
+  <div class="page-header section-height-100">
+    <div class="container">
+<body> 
+    <div class="container">
+        <div class="row">
+            <h1>Browse ETFs</h1>
+            <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">Symbol</th>
@@ -28,16 +26,7 @@
                         <td>No ETFs available</td>
                     {% endfor %}
                 </tbody>
-                </table>
-
-                  </div>
-                </form>
-
+            </table>
         </div>
     </div>
-
-</section>
-
-
-
-{% endblock content %}
+</body>

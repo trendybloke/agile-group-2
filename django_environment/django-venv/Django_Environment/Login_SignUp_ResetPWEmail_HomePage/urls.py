@@ -17,18 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
 from .views import home_view, auth_view, verify_view
-from etfs import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("accounts.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
     path("etf/", include("etfs.urls")),
+    path('', TemplateView.as_view(template_name='home.html'), name='home_view'),
     path('login/', auth_view, name='login_view'),
     path('verify/', verify_view, name='verify_view'),
-    
-    path('', TemplateView.as_view(template_name='home.html'), name='home_view'),
-    
-
-
 ]
-

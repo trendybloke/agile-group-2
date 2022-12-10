@@ -74,7 +74,13 @@ class Account(models.Model):
     
     def update_balance(self,amount,type):
         """method to change balance of an account"""
-        #find direction of funds from type
+        #find direction of funds from type #jp 9-12-2022, type expected is '-' to sub, '+' to add
+        if type == "-":
+            self.balance -= amount
+        elif type == "+":
+            self.balance += amount
+        else:
+            pass
         # add or subtract the amount depending on type
         print("balance edited") 
         
@@ -127,6 +133,7 @@ class ETF_instance(models.Model):
     date_created = models.DateField()
     is_deleted = models.BooleanField(default = False)
     ETF = models.ForeignKey('ETF', on_delete = models.RESTRICT)
+    price_on_create = models.FloatField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.RESTRICT, null = True, blank = True)
 
     def display_ETF(self):

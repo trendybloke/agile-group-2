@@ -1,10 +1,11 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from accounts.models import Code 
+from django.contrib.auth.forms import UserCreationForm
 from accounts.models import CustomUser
 User = CustomUser
 
-class CodeForm(forms.ModelForm):
+
+class CodeForm(forms.ModelForm):#2fa
     number = forms.CharField(label='Code', help_text='Enter SMS verification code')
     class Meta:
         model = Code

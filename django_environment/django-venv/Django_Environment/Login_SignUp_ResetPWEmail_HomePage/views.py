@@ -6,6 +6,7 @@ from Login_SignUp_ResetPWEmail_HomePage.forms import CodeForm
 from accounts.models import CustomUser
 from .forms import LoginForm, SignUpForm
 
+
 @login_required
 def home_view(request):
     return render(request, 'home.html', {})
@@ -88,6 +89,7 @@ def register_user(request):
 
     return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
     
+
 
 
 

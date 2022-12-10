@@ -10,17 +10,12 @@
     <div class="collapse navbar-collapse" id="navigation">
       <ul class="navbar-nav navbar-nav-hover mx-auto">
         <li class="nav-item px-3">
-<<<<<<< Updated upstream
           {% url 'browse_etfs' as browse_url%}
           <a class="nav-link" href="{{ browse_url }}">
-=======
-          <a class="nav-link">
->>>>>>> Stashed changes
             Browse
           </a>
         </li>
 
-<<<<<<< Updated upstream
         <!--
           <li class="nav-item px-3">
             <a class="nav-link" href="">
@@ -28,16 +23,10 @@
             </a>
           </li>
         -->
-=======
-        <li class="nav-item px-3">
-          <a class="nav-link">
-            ETFs
-          </a>
-        </li>
->>>>>>> Stashed changes
 
         <li class="nav-item px-3">
-          <a class="nav-link">
+          {% url 'portfolio' username='a_test' as portfolio_url %}
+          <a class="nav-link" href="{{ portfolio_url }}">
             Portfolio
           </a>
         </li>
@@ -50,12 +39,10 @@
       </ul>
 
       <ul class="navbar-nav ms-auto">
-<<<<<<< Updated upstream
         {% url 'signup' as signup_url %}
-        <a class="btn bg-gradient-primary mb-0" href="{{ signup_url }}">Sign Up</a>
-=======
-        <button class="btn bg-gradient-primary mb-0">Sign Up</button>
->>>>>>> Stashed changes
+        <a class="btn bg-gradient-primary mb-0" href="{{ signup_url }}">
+          Sign Up
+        </a>
       </ul>
     </div>
   </div>
