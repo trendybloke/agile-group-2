@@ -21,6 +21,7 @@ from .views import home_view, auth_view, verify_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("accounts.urls")),
+    path("sadmin/", include("sadmin.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("etf/", include("etfs.urls")),
     path('', TemplateView.as_view(template_name='home.html'), name='home_view'),

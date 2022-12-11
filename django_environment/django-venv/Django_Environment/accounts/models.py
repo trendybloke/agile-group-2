@@ -2,8 +2,20 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser #required for 2fa
 import random
 
+"""required for getting object url"""
+from django.urls import reverse
+
+"""required for refferencting the Django Auth tables as foreign keys"""
+from django.conf import settings
+
+"""Models defined below"""
+
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=12)
+
+    def get_absolute_url(self):
+        """Method to allow Access to an individual record from the browser"""
+        return reverse('customuser_detail', args = [str(self.id)])
     
 class Code(models.Model):
     number = models.CharField(max_length=5, blank=True)
@@ -24,14 +36,6 @@ class Code(models.Model):
         self.number = code_string
         super().save(*args, **kwargs)
 
-
-"""required for getting object url"""
-from django.urls import reverse
-
-"""required for refferencting the Django Auth tables as foreign keys"""
-from django.conf import settings
-
-"""Models defined below"""
 class User_Details(models.Model):
     """Model to hold additional details required for a user to engage in EFT trading."""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.RESTRICT, related_name = 'User')

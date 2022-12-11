@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "accounts",
     "etfs",
     "Login_SignUp_ResetPWEmail_HomePage",
+    "sadmin",
 
     #pip install django-crispy-forms + pip install twilio
     'crispy_forms'
