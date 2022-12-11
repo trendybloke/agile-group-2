@@ -25,7 +25,7 @@
 
                 <li class="nav-item px-3">
                   {% if user.is_authenticated %}
-                    {% url 'portfolio' username='a_test' as portfolio_url %}
+                    {% url 'portfolio' username=request.user.username as portfolio_url %}
                     <a class="nav-link" href="{{ portfolio_url }}">
                         Portfolio
                     </a>
