@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.defaulttags import register
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 from decimal import Decimal
 from datetime import date
 from accounts.models import ETF, ETF_instance, Account, CustomUser
@@ -101,6 +102,7 @@ def etf_details(request, etf_symbol):
     except ObjectDoesNotExist:
         return redirect(etf_browse)
 
+@login_required
 @require_http_methods(["GET"])
 def purchase_etf(request, etf_symbol):
     """
@@ -124,6 +126,7 @@ def purchase_etf(request, etf_symbol):
     except ObjectDoesNotExist:
         return redirect(etf_browse)
 
+@login_required
 @require_http_methods(["POST"])
 def instantiate_etf(request, etf_symbol):
     """ POST request when buying an ETF. """
