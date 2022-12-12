@@ -2,8 +2,20 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser #required for 2fa
 import random
 
+"""required for getting object url"""
+from django.urls import reverse
+
+"""required for refferencting the Django Auth tables as foreign keys"""
+from django.conf import settings
+
+"""Models defined below"""
+
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=12)
+	
+    def get_absolute_url(self):
+        """Method to allow Access to an individual record from the browser"""
+        return reverse('customuser_detail', args = [str(self.id)])
     
 class Code(models.Model):
     number = models.CharField(max_length=5, blank=True)
