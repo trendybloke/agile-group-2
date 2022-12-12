@@ -1,11 +1,24 @@
-from django.test import TestCase, SimpleTestCase
 from django.urls import reverse, resolve
-
+from django.test import TestCase, SimpleTestCase
+from django.test import TestCase, SimpleTestCase, Client
 from accounts.models import ETF, ETF_instance
 from accounts.views import SignUpView
+from accounts.models import CustomUser as User
+ 
+class RegisterUserTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+ 
+    def test_register_new_user(self):
+        data = {'username': 'testuser2',
+                'password1': 'testpass',
+                'password2': 'testpass',
+                'email': 'test2@test.com'}
+        self.client.post(reverse('register'), data)
+        self.assertEqual(User.objects.filter(username='testuser2').exists(), True)
 
 class ETFModelTests(TestCase):
-    """Tests for the ETF Model"""
+     """Tests for the ETF Model"""
     def setUp(self):
         """Create a new ETF for testing"""
         self.test_ETF = ETF(symbol = 'TEST', date_created = '2020-03-20')
@@ -42,3 +55,4 @@ class TestUrls(SimpleTestCase):
         print(resolve(url))
         # to check if the resolved url function == singupView 
         self.assertEquals(resolve(url).func.view_class, SignUpView)
+
