@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.template.defaulttags import register
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from Login_SignUp_ResetPWEmail_HomePage import views as home_views
 from Login_SignUp_ResetPWEmail_HomePage.forms import LoginForm, SignUpForm
 from etfs import views as etf_views
@@ -47,9 +48,13 @@ def register_user(request):
 def get_value(dictionary, key):
     return dictionary.get(key)
 
+@login_required
 def portfolio(request, username):
     """ Request for a user's portfolio page """
     context = {}
+    
+    # Set template flag for showing sell columns
+    context["user_owns_page"] = request.user.username == username
     
     # Determine if requested user exists
     try:
@@ -135,6 +140,7 @@ def portfolio(request, username):
     except ObjectDoesNotExist:
         return redirect(etf_views.etf_browse)
 
+@login_required
 def sell_etf(request, username):
     """ POST request received when a user wants to sell an ETF instance """
     if request.method != "POST":

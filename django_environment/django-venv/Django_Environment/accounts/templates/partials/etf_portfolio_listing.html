@@ -22,7 +22,7 @@
     </td>
     <td>
         {% if user_owns_page %}
-            <form method="post" action={% url 'sell_etf' 'a_test' %}>
+            <form method="post" action={% url 'sell_etf' request.user.username %}>
                 {% csrf_token %}
                 <button class="btn btn-outline-primary btn-sm" type="submit">Sell</button>
                 <!--<input type="hidden" value="{{ etf_symbol }}" name="etf_symbol"/>-->
