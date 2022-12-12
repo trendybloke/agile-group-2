@@ -112,6 +112,33 @@
                     </div>
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Quote type</th>
+                                <th>Company</th>
+                                <th>History</th>
+                                <th>Price</th>
+                                <th>Growth</th>
+                            </tr>
+                            {% for etf in user_etf %}
+                                <tr>
+                                    <td><a href="/etf/details/{{ etf.symbol }}">{{ etf.symbol }}</a></td>
+                                    <td>{{ etf.quoteType }}</td>
+                                    <td>{{ etf.company }}</td>
+                                    <td>{{ etf.history }}</td>
+                                    <td>{{ etf.price }}</td>
+                                    <td>{{ etf.growth }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
         
     {% endblock content %}
