@@ -37,6 +37,9 @@
                     {% endfor %}
                 {% endif %}
                 <h2>Owned ETFs</h2>
+                <div>
+                    <canvas id="chart"></canvas>
+                </div>
                 <table class="table">
                     <thead>
                         <tr>
@@ -61,4 +64,19 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {{ etf_data|json_script:"etf-data" }}
+
+    <script>
+        const ctx = document.getElementById('chart');
+
+        const etfdata = JSON.parse(document.getElementById('etf-data').textContent);
+
+        console.log(etfdata)
+        console.log(Object.keys(etfdata))
+
+    </script>
+
 </body>
