@@ -26,11 +26,13 @@ def buildDetailedContext(etf_details):
         # Add ETF only data here
         context["etf_price"] = str(round(etf_details["regularMarketPrice"], 2)) + " " + etf_details["currency"] 
         context["etf_amount"] = etf_details["askSize"]
+        context["holdings_data"] = etf_details["holdings"]
     else:    
         # Add stock only data here
         context["etf_price"] = str(round(etf_details["currentPrice"], 2)) + " " + etf_details["currency"] 
         context["etf_website"] = etf_details["website"]
 
+    context["quote_type"] = etf_details["quoteType"]
     return context
 
 @register.filter
@@ -50,7 +52,7 @@ def etf_browse(request):
     for etf in etfs:
         specific_etf_data = {}
         etf_info = yf.Ticker(etf.symbol).info
-        
+                
         # print("\n\n" + str(etf_info))
 
         specific_etf_data['company'] = etf_info["longName"]

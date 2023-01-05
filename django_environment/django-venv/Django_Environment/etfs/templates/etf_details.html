@@ -4,35 +4,63 @@
 <div class="container">
     <div>
         {% include "partials/etf_name.html" %}
-        <div>
-            <h2>Cool chart<h2>
+        <div class="row">
+            {% if quote_type == "ETF" %}
+            
+            <div class="col">
+                <canvas id="chart"></canvas>
+            </div>
+    
+            {% endif %}
+            <div class="col">
+                <h2>Summary</h2>
+                <p>{{ etf_summary }}</p>
+                {% if etf_website %}
+                    <P>Website: <a href="{{etf_website}}">{{ etf_website }}</a></p>
+                {% endif %}
+                {% if etf_amount %}
+                    <h2>{{ etf_price }} per {{ etf_amount }} share(s)<h2>
+                {% else %}
+                    <h2>{{ etf_price }} per share<h2>
+                {% endif %}
+                {% url 'purchase_etf' etf_symbol as purchase_url %}
+                {% if purchase_url %}
+                <h2><a href="{{ purchase_url }}">Buy</a></h2>
+                {% endif %}
+            </div>
         </div>
-        <h2>Summary</h2>
-        <p>{{ etf_summary }}</p>
-        {% if etf_website %}
-            <P>Website: <a href="{{etf_website}}">{{ etf_website }}</a></p>
-        {% endif %}
     </div>
-    <div>
-        {% if etf_amount %}
-            <h2>{{ etf_price }} per {{ etf_amount }} share(s)<h2>
-        {% else %}
-            <h2>{{ etf_price }} per share<h2>
-        {% endif %}
-        {% url 'purchase_etf' etf_symbol as purchase_url %}
-        {% if purchase_url %}
-        <h2><a href="{{ purchase_url }}">Buy</a></h2>
-        {% endif %}
-    </div>
-    <div>
-        <h2>Purchase history</h2>
-    </div>
-    <!--
-        <div>
-            <h1>DATA</h1>
-            <p>{{ etf_data }}</p>
-        </div>
-    -->
 </div>
+
+{% if quote_type == "ETF" %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{ holdings_data|json_script:"holdings-data" }}
+
+<script>
+    const ctx = document.getElementById('chart');
+    
+    const holdings = JSON.parse(document.getElementById('holdings-data').textContent);
+    
+    let labels = [];
+    let data = [];
+    
+    for(let i = 0; i < holdings.length; i++){
+        labels.push(holdings[i].holdingName)
+        data.push(holdings[i].holdingPercent * 100)
+    }
+    
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "ETF holding",
+                data: data
+            }]
+        }
+    });
+</script>
+{% endif %}
 
 {% endblock content %}
